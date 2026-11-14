@@ -15,23 +15,29 @@ const src = join(root, 'src');
 const out = join(root, 'dist');
 const config = JSON.parse(readFileSync(join(root, 'site.config.json'), 'utf8'));
 
-// 八頁的順序就是「翻頁」順序
+// 頁面順序就是「翻頁」順序
 export const PAGES = [
   { slug: 'index', label: '首頁' },
   { slug: 'story', label: '故事起點' },
   { slug: 'archive', label: '婚姻檔案' },
   { slug: 'possibilities', label: '關係的可能' },
   { slug: 'guide', label: '使用指南' },
-  { slug: 'registration', label: '人物登記' },
   { slug: 'preview', label: '試閱檔案' },
   { slug: 'begin', label: '開始故事' },
 ];
 
+// 主導覽：「故事」「檔案」各自展開成子選單
 const NAV = [
   { slug: 'index', label: '首頁' },
-  { slug: 'story', label: '故事' },
-  { slug: 'archive', label: '檔案' },
-  { slug: 'preview', label: '試閱' },
+  { id: 'story', label: '故事', children: [
+    { slug: 'story', label: '故事起點', en: 'Before the signature' },
+    { slug: 'possibilities', label: '關係的可能', en: 'Possible futures' },
+    { slug: 'preview', label: '試閱檔案', en: 'Selected pages' },
+  ] },
+  { id: 'files', label: '檔案', children: [
+    { slug: 'archive', label: '婚姻檔案', en: 'Marriage archive' },
+    { slug: 'guide', label: '使用指南', en: 'User manual' },
+  ] },
   { slug: 'begin', label: '開始故事', cta: true },
 ];
 
@@ -72,10 +78,20 @@ function render(tpl, ctx) {
 }
 
 function navHtml(current) {
-  return NAV.map(
-    (n) =>
-      `<li><a class="nav-link${n.cta ? ' nav-cta' : ''}" href="${href(n.slug)}"${n.slug === current ? ' aria-current="page"' : ''}>${n.label}</a></li>`,
-  ).join('\n          ');
+  const cur = (slug) => (slug === current ? ' aria-current="page"' : '');
+  return NAV.map((n) => {
+    if (!n.children) {
+      return `<li><a class="nav-link${n.cta ? ' nav-cta' : ''}" href="${href(n.slug)}"${cur(n.slug)}>${n.label}</a></li>`;
+    }
+    const active = n.children.some((c) => c.slug === current);
+    const items = n.children
+      .map((c) => `<li><a class="nav-sub-link" href="${href(c.slug)}"${cur(c.slug)}><span class="nav-sub-label">${c.label}</span><span class="nav-sub-en" lang="en">${c.en}</span></a></li>`)
+      .join('');
+    return `<li class="nav-group${active ? ' is-active' : ''}">
+            <button class="nav-link nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-sub-${n.id}">${n.label}<span class="nav-caret" aria-hidden="true"></span></button>
+            <ul class="nav-sub" id="nav-sub-${n.id}">${items}</ul>
+          </li>`;
+  }).join('\n          ');
 }
 
 function indexHtml(current) {
@@ -96,7 +112,7 @@ function turnerHtml(slug) {
       : '<span class="turner-link turner-empty" aria-hidden="true"></span>';
   return `<nav class="turner" aria-label="翻頁">
     ${cell(prev, 'prev')}
-    <span class="turner-folio" aria-hidden="true">${String(i + 1).padStart(2, '0')} / 08</span>
+    <span class="turner-folio" aria-hidden="true">${String(i + 1).padStart(2, '0')} / ${String(PAGES.length).padStart(2, '0')}</span>
     ${cell(next, 'next')}
   </nav>`;
 }

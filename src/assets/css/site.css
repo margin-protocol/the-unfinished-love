@@ -92,7 +92,7 @@ main { display: block; outline: none; }
 .brand-zh { font-family: var(--serif); font-size: 18px; font-weight: 600; letter-spacing: .12em; }
 .brand-en { font-family: var(--latin); font-size: 10px; letter-spacing: .26em; color: var(--brown); }
 
-.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 4px; }
+.site-nav > ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 4px; }
 .nav-link {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
   font-size: 15px; text-decoration: none; color: var(--ink); letter-spacing: .12em;
@@ -107,6 +107,38 @@ main { display: block; outline: none; }
   transition: background .25s, color .25s;
 }
 .nav-cta:hover, .nav-cta[aria-current="page"] { background: var(--red); color: var(--inner); }
+
+/* 子選單：「故事」「檔案」 */
+.nav-group { position: relative; }
+.nav-group-btn { background: none; border: 0; border-bottom: 1px solid transparent; cursor: pointer; gap: 8px; font: inherit; font-size: 15px; }
+.nav-group.is-active > .nav-group-btn { color: var(--red); box-shadow: inset 0 -1px 0 var(--red); }
+.nav-caret { width: 6px; height: 6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .25s var(--ease); }
+.nav-group-btn[aria-expanded="true"] .nav-caret { transform: translateY(1px) rotate(-135deg); }
+.nav-sub { list-style: none; margin: 0; padding: 8px; display: none; }
+.nav-group-btn[aria-expanded="true"] + .nav-sub { display: block; }
+.nav-sub-link {
+  display: flex; flex-direction: column; justify-content: center; min-height: 52px; padding: 6px 14px; border-radius: 3px;
+  text-decoration: none; line-height: 1.5; transition: background .2s, color .2s;
+}
+.nav-sub-label { font-size: 15px; letter-spacing: .12em; }
+.nav-sub-en { font-family: var(--latin); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--brown); }
+.nav-sub-link:hover { background: var(--paper); color: var(--red); }
+.nav-sub-link[aria-current="page"] { color: var(--red); }
+.nav-sub-link[aria-current="page"] .nav-sub-label::before { content: ""; display: inline-block; width: 12px; height: 1px; background: var(--red); vertical-align: middle; margin-right: 8px; }
+@media (min-width: 761px) {
+  .nav-sub {
+    position: absolute; top: calc(100% + 6px); left: 50%; min-width: 210px; z-index: 60;
+    background: var(--inner); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+    transform: translateX(-50%);
+  }
+  .nav-group-btn[aria-expanded="true"] + .nav-sub { animation: drop .2s var(--ease) both; }
+  /* 滑鼠移過去也能展開；按鈕與選單之間留一段可停留的區域 */
+  .nav-sub::before { content: ""; position: absolute; left: 0; right: 0; top: -8px; height: 8px; }
+}
+@media (min-width: 761px) and (hover: hover) {
+  .nav-group:hover > .nav-sub { display: block; }
+}
+html:not(.js) .nav-group:focus-within > .nav-sub { display: block; }
 
 .nav-toggle {
   display: none; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; padding: 0 6px 0 10px;
@@ -132,13 +164,17 @@ main { display: block; outline: none; }
     display: none;
   }
   .js .site-nav.is-open { display: block; animation: drop .25s var(--ease) both; }
-  .js .site-nav ul { flex-direction: column; align-items: stretch; gap: 0; padding: 8px var(--gutter) 20px; }
-  .js .nav-link { min-height: 52px; border-bottom: 1px solid var(--line); font-size: 16px; }
+  .js .site-nav > ul { flex-direction: column; align-items: stretch; gap: 0; padding: 8px var(--gutter) 20px; }
+  .js .nav-link { display: flex; min-height: 52px; border-bottom: 1px solid var(--line); font-size: 16px; }
   .js .nav-link[aria-current="page"]:not(.nav-cta) { box-shadow: none; }
   .js .nav-cta { margin: 16px 0 0; justify-content: center; border-bottom: 1px solid var(--red); }
+  .js .nav-group-btn { width: 100%; justify-content: space-between; min-height: 52px; font-size: 16px; text-align: left; }
+  .js .nav-group.is-active > .nav-group-btn { box-shadow: none; }
+  .js .nav-sub { padding: 4px 0 10px 14px; border-bottom: 1px solid var(--line); }
+  .js .nav-group-btn[aria-expanded="true"] { border-bottom-color: transparent; }
   /* 無 JS 時：導覽直接換行顯示 */
   html:not(.js) .header-inner { flex-wrap: wrap; padding-bottom: 8px; }
-  html:not(.js) .site-nav ul { flex-wrap: wrap; }
+  html:not(.js) .site-nav > ul { flex-wrap: wrap; }
 }
 @keyframes drop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
@@ -266,9 +302,14 @@ main { display: block; outline: none; }
 }
 .hero-line { font-family: var(--serif); font-size: clamp(18px, 2.4vw, 22px); line-height: 2.1; letter-spacing: .12em; margin: 0 auto 40px; }
 .hero-line span { display: block; }
-.hero-scroll {
-  display: block; width: 1px; height: 72px; margin: clamp(48px, 7vw, 72px) auto 0; background: linear-gradient(var(--red), rgba(155, 59, 51, 0));
-}
+/* 首頁只有封面：撐滿一個畫面，內容置中 */
+.page-index main { min-height: calc(100vh - var(--header-h)); min-height: calc(100svh - var(--header-h)); display: flex; flex-direction: column; justify-content: center; }
+.page-index .hero { padding: clamp(40px, 7vh, 88px) 0; }
+.page-index .site-footer { margin-top: 0; }
+.head-lines { margin-top: 28px; padding-left: 18px; border-left: 1px solid var(--red); font-family: var(--serif); color: var(--brown); line-height: 2.05; max-width: 34em; }
+.head-lines p { margin: 0; }
+.head-lines .head-lines-title { color: var(--ink); margin-bottom: 6px; }
+.begin-traits { padding-top: clamp(48px, 7vw, 80px); }
 
 .prose { font-family: var(--serif); font-size: clamp(17px, 1.9vw, 19px); line-height: 2.15; letter-spacing: .06em; }
 .prose p { margin: 0 0 1.5em; }
@@ -281,27 +322,6 @@ main { display: block; outline: none; }
 .trait-no { font-family: var(--latin); font-size: 12px; letter-spacing: .2em; color: var(--red); margin-bottom: 18px; display: block; }
 .trait h3 { font-size: 21px; margin-bottom: 12px; }
 .trait p { color: var(--brown); margin: 0; font-size: 16px; }
-
-.entry {
-  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(28px, 5vw, 72px); align-items: center;
-}
-.entry h2 { font-size: clamp(24px, 3vw, 32px); line-height: 1.6; }
-.entry-lines p { margin: 0; color: var(--brown); font-family: var(--serif); line-height: 2.1; }
-.entry-lines { margin-bottom: 32px; }
-.folder-stack { position: relative; height: 300px; }
-.folder-stack .sheet {
-  position: absolute; inset: 0; background: var(--inner); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
-}
-.folder-stack .sheet:nth-child(1) { transform: rotate(-3deg) translate(-10px, 10px); background: #F3EEE6; }
-.folder-stack .sheet:nth-child(2) { transform: rotate(1.5deg) translate(8px, 4px); }
-.folder-stack .sheet:nth-child(3) { padding: 34px 32px; display: flex; flex-direction: column; }
-.folder-stack .sheet:nth-child(3)::before {
-  content: ""; position: absolute; top: -14px; left: 28px; width: 110px; height: 15px;
-  background: var(--inner); border: 1px solid var(--line); border-bottom: 0; border-radius: 4px 4px 0 0;
-}
-.folder-stack ul { list-style: none; margin: 18px 0 0; padding: 0; }
-.folder-stack li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px dashed var(--line); font-size: 15px; }
-.folder-stack li span:last-child { font-family: var(--latin); font-size: 11px; letter-spacing: .16em; color: var(--brown); }
 
 /* ==========================================================================
    PAGE 02｜故事起點
@@ -434,46 +454,6 @@ html:not(.js) .tabpanel + .tabpanel { margin-top: 32px; }
 .notes li::before { content: ""; position: absolute; left: 4px; top: 1.45em; width: 12px; height: 1px; background: var(--red); }
 
 /* ==========================================================================
-   PAGE 06｜人物登記
-   ========================================================================== */
-.reg-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr); gap: clamp(24px, 4vw, 48px); align-items: start; }
-.reg-form fieldset { border: 0; padding: 0; margin: 0 0 36px; min-width: 0; }
-.reg-form legend {
-  display: flex; align-items: baseline; gap: 14px; width: 100%; padding: 0 0 12px; margin-bottom: 8px; border-bottom: 1px solid var(--ink);
-  font-family: var(--serif); font-size: 21px; letter-spacing: .2em;
-}
-.reg-form legend small { font-family: var(--latin); font-size: 10px; letter-spacing: .22em; color: var(--brown); }
-.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px; }
-.f { display: flex; flex-direction: column; padding: 12px 0 6px; }
-.f.wide { grid-column: 1 / -1; }
-.f label { font-size: 14px; color: var(--brown); letter-spacing: .14em; margin-bottom: 4px; }
-.f .hint { font-size: 12px; color: var(--brown); opacity: .85; margin-top: 4px; line-height: 1.6; }
-.f input, .f textarea {
-  width: 100%; min-height: 44px; padding: 8px 2px; border: 0; border-bottom: 1px dashed var(--brown);
-  background: transparent; border-radius: 0; font-size: 16px; line-height: 1.7; transition: border-color .2s, background .2s;
-}
-.f textarea { resize: vertical; min-height: 72px; }
-.f input::placeholder, .f textarea::placeholder { color: var(--brown); opacity: .5; }
-.f input:hover, .f textarea:hover { background: rgba(255, 252, 246, .7); }
-.f input:focus, .f textarea:focus { outline: none; border-bottom: 1px solid var(--red); background: var(--inner); }
-.f input:focus-visible, .f textarea:focus-visible { box-shadow: 0 2px 0 0 var(--red); }
-.f .warn { font-size: 13px; color: var(--red); margin-top: 4px; }
-.f .warn:empty { display: none; }
-
-.reg-output { position: sticky; top: calc(var(--header-h) + 20px); }
-.reg-output pre {
-  margin: 0; max-height: min(56vh, 520px); overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere;
-  font-family: var(--sans); font-size: 15px; line-height: 1.85; background: var(--paper); border: 1px solid var(--line);
-  border-radius: 3px; padding: 18px 18px;
-}
-.reg-output .actions { margin-top: 18px; }
-.reg-output .btn { flex: 1 1 auto; }
-.privacy { margin-top: 18px; font-size: 13px; color: var(--brown); line-height: 1.8; }
-.after-copy { margin-top: 18px; padding: 16px 18px; background: var(--player); border-radius: 3px; font-size: 15px; }
-.after-copy[hidden] { display: none; }
-.after-copy p { margin-bottom: 10px; }
-
-/* ==========================================================================
    PAGE 07｜試閱檔案
    ========================================================================== */
 .preview-index { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; list-style: none; padding: 0; margin: 0 0 clamp(40px, 6vw, 64px); }
@@ -565,15 +545,13 @@ html:not(.js) .tabpanel + .tabpanel { margin-top: 32px; }
    Responsive
    ========================================================================== */
 @media (max-width: 960px) {
-  .story-grid, .entry, .record-grid, .reg-layout { grid-template-columns: minmax(0, 1fr); }
+  .story-grid, .record-grid { grid-template-columns: minmax(0, 1fr); }
   .agreement { justify-self: stretch; max-width: none; }
-  .reg-output { position: static; }
   .life-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .steps li:nth-child(3) { padding-left: 0; border-left: 0; }
   .footer-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .footer-brand { grid-column: 1 / -1; }
-  .folder-stack { height: 280px; max-width: 460px; width: 100%; margin: 12px auto 0; }
 }
 @media (max-width: 760px) {
   .traits, .paths, .commands, .people { grid-template-columns: minmax(0, 1fr); }
@@ -586,7 +564,7 @@ html:not(.js) .tabpanel + .tabpanel { margin-top: 32px; }
   body { font-size: 16px; }
   .hero-title { letter-spacing: .14em; padding-left: .14em; }
   .hero-line { letter-spacing: .06em; }
-  .fields, .party { grid-template-columns: minmax(0, 1fr); }
+  .party { grid-template-columns: minmax(0, 1fr); }
   .steps { grid-template-columns: minmax(0, 1fr); }
   .steps li, .steps li + li { padding: 20px 0 8px; border-left: 0; border-bottom: 1px dashed var(--line); }
   .kv-row { grid-template-columns: minmax(0, 1fr); gap: 0; }

@@ -1,7 +1,7 @@
 // 驗收檢查 + 截圖（需要 Playwright；不是網站本身的依賴）
 //   node scripts/check.mjs            只檢查
 //   node scripts/check.mjs --shots    檢查並輸出截圖到 docs/screenshots/
-// 檢查項目：JS 錯誤、各寬度是否橫向溢出、站內連結是否存在、複製功能、分頁鍵盤操作。
+// 檢查項目：JS 錯誤、各寬度是否橫向溢出、站內連結是否存在、導覽選單、複製功能、分頁鍵盤操作。
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -18,7 +18,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const BASE = '/the-unfinished-love/';
 const SHOTS = process.argv.includes('--shots');
-const PAGES = ['index', 'story', 'archive', 'possibilities', 'guide', 'registration', 'preview', 'begin', '404'];
+const PAGES = ['index', 'story', 'archive', 'possibilities', 'guide', 'preview', 'begin', '404'];
 const WIDTHS = [320, 360, 375, 390, 400, 768, 1280, 1440];
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png' };
 
@@ -93,6 +93,14 @@ for (const w of WIDTHS) {
   await page.keyboard.press('Escape');
   if (await page.isVisible('.site-nav .nav-cta')) problems.push('Esc 無法關閉手機選單');
 
+  // 手機選單內的子選單
+  await page.goto(url('guide'));
+  await page.click('.nav-toggle');
+  if (!(await page.isVisible('#nav-sub-files a[href="./archive.html"]'))) problems.push('手機選單未展開目前所在分組');
+  await page.click('[aria-controls="nav-sub-story"]');
+  if (!(await page.isVisible('#nav-sub-story a[href="./preview.html"]'))) problems.push('手機子選單無法展開');
+  await page.keyboard.press('Escape');
+
   // 指令複製
   await page.goto(url('guide'));
   const cmds = await page.$$('[data-copy]');
@@ -111,23 +119,25 @@ for (const w of WIDTHS) {
   await page.keyboard.press('ArrowRight');
   if (!(await page.isVisible('#file-life'))) problems.push('分頁方向鍵無效');
 
-  // 人物登記
-  await page.goto(url('registration'));
-  await page.fill('#p_name', '測試的名字很長很長很長很長很長很長很長很長很長很長很長');
-  await page.fill('#s_age', '35');
-  await page.fill('#m_facts', '第一行\n第二行');
-  await page.click('#reg-copy');
-  const reg = await page.evaluate(() => navigator.clipboard.readText());
-  if (!reg.includes('姓名：測試的名字') || !reg.includes('成年年齡：35') || !reg.includes('其他公開事實：第一行 第二行') || !reg.includes('故事所在地（會影響法律程序）：')) problems.push('登記文字格式錯誤');
-  if (await page.isHidden('#reg-after')) problems.push('複製後沒有顯示前往提示');
-  await page.fill('#p_age', '16');
-  if (!(await page.isDisabled('#reg-copy'))) problems.push('未成年年齡未阻擋複製');
-  await page.click('#reg-clear');
-  if ((await page.inputValue('#p_name')) === '') problems.push('清空不應一次就生效');
-  await page.click('#reg-clear');
-  if ((await page.inputValue('#p_name')) !== '') problems.push('清空失敗');
-  const stored = await page.evaluate(() => localStorage.length + sessionStorage.length);
-  if (stored) problems.push('不應寫入瀏覽器儲存空間');
+  await ctx.close();
+}
+
+// 桌面子選單：點擊、鍵盤、Esc
+{
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+  const page = await ctx.newPage();
+  await page.goto(url('index'));
+  await page.click('[aria-controls="nav-sub-story"]');
+  if (!(await page.isVisible('#nav-sub-story a[href="./possibilities.html"]'))) problems.push('桌面子選單無法展開');
+  await page.click('[aria-controls="nav-sub-files"]');
+  await page.mouse.move(10, 600); // 移開滑鼠，排除 hover 展開
+  if (await page.isVisible('#nav-sub-story a[href="./possibilities.html"]')) problems.push('打開另一個子選單時，前一個沒有收起');
+  await page.keyboard.press('Escape');
+  if (await page.isVisible('#nav-sub-files a[href="./guide.html"]')) problems.push('Esc 無法關閉子選單');
+  await page.mouse.move(10, 600);
+  await page.goto(url('archive'));
+  if (!(await page.$('.nav-group.is-active [aria-controls="nav-sub-files"]'))) problems.push('目前所在分組沒有標示');
   await ctx.close();
 }
 
@@ -135,7 +145,7 @@ for (const w of WIDTHS) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
   const page = await ctx.newPage();
-  await page.goto(url('index'));
+  await page.goto(url('begin'));
   const op = await page.$eval('.traits .trait', (e) => getComputedStyle(e).opacity);
   if (op !== '1') problems.push('reduced motion 下內容未立即顯示');
   await ctx.close();

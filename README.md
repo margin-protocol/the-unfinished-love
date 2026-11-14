@@ -6,7 +6,7 @@
 《愛的未完成式》的官方介紹網站：一場關於婚姻、選擇與告別的互動敘事。
 由 **MARGIN PROTOCOL｜頁邊協定** 製作。
 
-這個 repo 只放八頁的介紹網站。設計討論在 [`margin-protocol/ai-collaboration`](https://github.com/margin-protocol/ai-collaboration)。
+這個 repo 只放《愛的未完成式》的介紹網站。設計討論在 [`margin-protocol/ai-collaboration`](https://github.com/margin-protocol/ai-collaboration)。
 
 ## 頁面
 
@@ -17,9 +17,8 @@
 | 03 | 婚姻檔案 | `archive.html` |
 | 04 | 關係的可能 | `possibilities.html` |
 | 05 | 使用指南 | `guide.html` |
-| 06 | 人物登記 | `registration.html` |
-| 07 | 試閱檔案 | `preview.html` |
-| 08 | 開始故事 | `begin.html` |
+| 06 | 試閱檔案 | `preview.html` |
+| 07 | 開始故事 | `begin.html` |
 
 ## 在自己電腦上預覽
 
@@ -42,14 +41,13 @@ node scripts/serve.mjs     # 打開 http://localhost:4173/the-unfinished-love/
 | 顏色、字體、版面 | `src/assets/css/site.css`（最上方的色票變數） |
 | 兩張椅子的插畫 | `src/assets/img/two-chairs.svg`（同名檔案直接替換） |
 | 社群分享圖 | `src/assets/img/og-image.png`（1200×630） |
-| 人物登記的輸出格式 | `src/assets/js/registration.js` 的 `FORMAT` |
 
 尚未確定的網址在 `site.config.json` 留空字串即可，頁面會自動顯示「連結待設定」。
 
 ## 檢查與截圖
 
 ```bash
-node scripts/check.mjs           # 8 種寬度的橫向溢出、JS 錯誤、壞連結、複製與表單功能
+node scripts/check.mjs           # 8 種寬度的橫向溢出、JS 錯誤、壞連結、選單與複製功能
 node scripts/check.mjs --shots   # 同上，並輸出截圖到 docs/screenshots/
 ```
 

@@ -87,6 +87,38 @@
     });
   }
 
+  /* ---------- 子選單（故事／檔案） ---------- */
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.nav-group-btn'));
+  var mobile = window.matchMedia('(max-width: 760px)');
+  function setGroup(btn, open) { btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  function closeGroups(except) { groups.forEach(function (b) { if (b !== except) setGroup(b, false); }); }
+  groups.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      if (!mobile.matches) closeGroups(btn);
+      setGroup(btn, open);
+    });
+    var group = btn.parentElement;
+    // 桌面：鍵盤焦點離開子選單時收起
+    group.addEventListener('focusout', function (e) {
+      if (!mobile.matches && !group.contains(e.relatedTarget)) setGroup(btn, false);
+    });
+    group.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        e.stopPropagation(); setGroup(btn, false); btn.focus();
+      }
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (!mobile.matches && !e.target.closest('.nav-group')) closeGroups();
+  });
+  // 手機選單打開時，目前所在的分組預設展開
+  function expandActive() {
+    groups.forEach(function (b) { setGroup(b, mobile.matches && b.parentElement.classList.contains('is-active')); });
+  }
+  expandActive();
+  mobile.addEventListener('change', expandActive);
+
   /* ---------- 分頁 ---------- */
   document.querySelectorAll('[data-tabs]').forEach(function (root) {
     var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
