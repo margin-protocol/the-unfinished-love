@@ -1,0 +1,95 @@
+---
+title: 人物登記
+description: 在故事開始之前，先寫下你們的名字。填寫你、配偶與這段婚姻的設定，產生可直接貼到 ChelizAI 的開局文字。
+scripts: <script src="assets/js/registration.js" defer></script>
+---
+    <header class="page-head">
+      <div class="wrap">
+        <div class="doc-meta"><span><b>UL—06</b>　Registration / Before We Begin</span><span>All fields optional</span></div>
+        <h1>在故事開始之前，<br>先寫下你們的名字。</h1>
+        <p class="lede">你可以決定這段婚姻從哪裡開始。<br>所有欄位都可以留白，留白的部分會在故事中慢慢浮現。</p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="wrap reg-layout">
+        <form class="doc reg-form" id="reg-form" autocomplete="off" novalidate aria-label="人物登記表">
+          <span class="doc-tab" lang="en">Form · UL-06</span>
+
+          <fieldset>
+            <legend>你 <small lang="en">You</small></legend>
+            <div class="fields">
+              <div class="f"><label for="p_name">姓名</label><input id="p_name" name="p_name" type="text" maxlength="60" placeholder="可留白"></div>
+              <div class="f"><label for="p_gender">性別</label><input id="p_gender" name="p_gender" type="text" maxlength="30" placeholder="自由填寫"></div>
+              <div class="f"><label for="p_age">成年年齡</label><input id="p_age" name="p_age" type="text" inputmode="numeric" maxlength="20" placeholder="18 歲以上" aria-describedby="p_age-warn"><span class="warn" id="p_age-warn" aria-live="polite"></span></div>
+              <div class="f"><label for="p_job">職業</label><input id="p_job" name="p_job" type="text" maxlength="60"></div>
+              <div class="f wide"><label for="p_look">外貌</label><input id="p_look" name="p_look" type="text" maxlength="200"></div>
+              <div class="f wide"><label for="p_personality">個性</label><input id="p_personality" name="p_personality" type="text" maxlength="200"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>配偶 <small lang="en">Spouse</small></legend>
+            <div class="fields">
+              <div class="f"><label for="s_name">姓名</label><input id="s_name" name="s_name" type="text" maxlength="60" placeholder="可留白"></div>
+              <div class="f"><label for="s_gender">性別</label><input id="s_gender" name="s_gender" type="text" maxlength="30" placeholder="自由填寫"></div>
+              <div class="f"><label for="s_age">成年年齡</label><input id="s_age" name="s_age" type="text" inputmode="numeric" maxlength="20" placeholder="18 歲以上" aria-describedby="s_age-warn"><span class="warn" id="s_age-warn" aria-live="polite"></span></div>
+              <div class="f"><label for="s_job">職業</label><input id="s_job" name="s_job" type="text" maxlength="60"></div>
+              <div class="f wide"><label for="s_look">外貌</label><input id="s_look" name="s_look" type="text" maxlength="200"></div>
+              <div class="f wide"><label for="s_personality">個性</label><input id="s_personality" name="s_personality" type="text" maxlength="200"></div>
+              <div class="f wide"><label for="s_voice">說話風格</label><input id="s_voice" name="s_voice" type="text" maxlength="200" placeholder="例如：說話很慢、習慣用反問句"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>這段婚姻 <small lang="en">Marriage</small></legend>
+            <div class="fields">
+              <div class="f"><label for="m_years">婚姻年數</label><input id="m_years" name="m_years" type="text" maxlength="30"></div>
+              <div class="f"><label for="m_place">所在地</label><input id="m_place" name="m_place" type="text" maxlength="60" aria-describedby="m_place-hint"><span class="hint" id="m_place-hint">會影響故事中的法律程序。</span></div>
+              <div class="f wide"><label for="m_home">共同住所</label><input id="m_home" name="m_home" type="text" maxlength="200"></div>
+              <div class="f wide"><label for="m_division">經濟與家務分工</label><textarea id="m_division" name="m_division" maxlength="400" rows="2"></textarea></div>
+              <div class="f wide"><label for="m_family">子女或寵物</label><input id="m_family" name="m_family" type="text" maxlength="200" placeholder="如適用"></div>
+              <div class="f wide"><label for="m_facts">其他公開事實</label><textarea id="m_facts" name="m_facts" maxlength="600" rows="3" aria-describedby="m_facts-hint"></textarea><span class="hint" id="m_facts-hint">雙方都知道的事。不需要寫角色的秘密，故事會自己展開。</span></div>
+            </div>
+          </fieldset>
+        </form>
+
+        <aside class="doc reg-output" aria-labelledby="out-title">
+          <span class="doc-no">Output · Opening text</span>
+          <h2 class="doc-title" id="out-title">開局文字</h2>
+          <pre id="reg-text" aria-live="off" tabindex="0" aria-label="產生的開局文字">【你】
+姓名：
+性別：
+成年年齡：
+外貌：
+個性：
+職業：
+
+【配偶】
+姓名：
+性別：
+成年年齡：
+外貌：
+個性：
+說話風格：
+職業：
+
+【這段婚姻】
+婚姻年數：
+故事所在地（會影響法律程序）：
+共同住所：
+經濟與家務分工：
+子女或寵物（如適用）：
+其他公開事實：</pre>
+          <div class="actions">
+            <button class="btn" type="button" id="reg-copy">複製登記資料</button>
+            <button class="btn btn-quiet" type="button" id="reg-clear">清空</button>
+          </div>
+          <div class="after-copy" id="reg-after" hidden>
+            <p>已複製登記資料。請前往 ChelizAI，在故事開場時貼上。</p>
+            <a class="text-link" href="./begin.html">前往開始故事 →</a>
+          </div>
+          <p class="privacy">你填寫的內容只存在這個頁面裡，不會上傳，也不會被保存；重新整理後便會消失。請不要填入真實的個人資料。</p>
+        </aside>
+      </div>
+    </section>

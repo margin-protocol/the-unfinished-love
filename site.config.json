@@ -1,0 +1,22 @@
+{
+  "_說明": "全站共用設定。尚未確認的網址請保持空字串，網站會自動顯示「連結待設定」，不會產生假連結。",
+
+  "workTitle": "愛的未完成式",
+  "workTitleEn": "THE UNFINISHED LOVE",
+  "brand": "MARGIN PROTOCOL",
+  "brandZh": "頁邊協定",
+  "tagline": "一場關於婚姻、選擇與告別的互動敘事。",
+  "lang": "zh-Hant-TW",
+
+  "siteUrl": "https://margin-protocol.github.io/the-unfinished-love/",
+  "_siteUrl說明": "正式網址。用於 canonical、Open Graph 與 sitemap。若改用自訂網域，只需修改這一行（結尾保留 /）。",
+
+  "chelizaiUrl": "",
+  "_chelizaiUrl說明": "《愛的未完成式》在 ChelizAI 上的作品連結，由湘提供後填入。",
+
+  "studioUrl": "https://margin-protocol.github.io/studio/",
+  "_studioUrl說明": "MARGIN PROTOCOL 官方網站。",
+
+  "ogImage": "assets/img/og-image.png",
+  "ogImageAlt": "暖紙色背景上的兩張椅子，中間一條沒有打結的紅線。"
+}

@@ -1,0 +1,17 @@
+<header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./" aria-label="{{config.workTitle}} {{config.workTitleEn}}，回到首頁">
+        <span class="brand-zh">{{config.workTitle}}</span>
+        <span class="brand-en">{{config.workTitleEn}}</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="nav-toggle-label">目錄</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="主要導覽">
+        <ul>
+          {{nav}}
+        </ul>
+      </nav>
+    </div>
+  </header>

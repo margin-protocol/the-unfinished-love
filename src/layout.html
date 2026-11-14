@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="{{config.lang}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{page.base}}
+  <title>{{page.fullTitle}}</title>
+  <meta name="description" content="{{page.description}}">
+  {{page.canonical}}
+  {{page.robots}}
+  <meta name="theme-color" content="#F7F4EE">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:site_name" content="{{config.workTitle}}｜{{config.workTitleEn}}">
+  <meta property="og:title" content="{{page.fullTitle}}">
+  <meta property="og:description" content="{{page.description}}">
+  {{page.ogUrl}}
+  <meta property="og:image" content="{{page.ogImage}}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{config.ogImageAlt}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="page-{{page.slug}} {{page.bodyClass}}">
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  {{> header}}
+  <main id="main" tabindex="-1">
+{{content}}
+    {{turner}}
+  </main>
+  {{> footer}}
+  <div class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="assets/js/site.js" defer></script>
+  {{page.scripts}}
+</body>
+</html>

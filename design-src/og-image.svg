@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F7F4EE"/>
+  <rect x="36" y="36" width="1128" height="558" fill="none" stroke="#D9CFC6"/>
+  <g font-family="Noto Serif CJK TC, Noto Serif TC, serif" fill="#2B2A28">
+    <text x="700" y="268" font-size="56" letter-spacing="8" font-weight="500">愛的未完成式</text>
+    <text x="702" y="334" font-size="24" letter-spacing="4" fill="#7A5A4F">離婚協議書已經放在桌上。</text>
+    <text x="702" y="372" font-size="24" letter-spacing="4" fill="#7A5A4F">但還沒有人簽名。</text>
+  </g>
+  <g font-family="Georgia, serif" fill="#7A5A4F" letter-spacing="6">
+    <text x="704" y="196" font-size="18">THE UNFINISHED LOVE</text>
+    <text x="704" y="540" font-size="14" fill="#9B3B33">MARGIN PROTOCOL</text>
+  </g>
+  <path d="M704 506 H 760" stroke="#9B3B33" stroke-width="1.5"/>
+</svg>
