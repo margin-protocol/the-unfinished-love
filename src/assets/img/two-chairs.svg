@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 84 580 262" role="img" aria-labelledby="t d">
+  <title id="t">兩張椅子與一條紅線</title>
+  <desc id="d">兩張款式不同的椅子相隔一段距離，微微朝向彼此。一條細紅線從其中一張椅子腳邊延伸到另一張，沒有打結，也沒有斷。</desc>
+  <!-- 暫用插畫：之後可直接以正式插畫替換此檔案（保留檔名或修改 src/partials/chairs.html） -->
+  <defs>
+    <filter id="pencil" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.1"/>
+    </filter>
+    <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#7A5A4F" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#7A5A4F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 地面 -->
+  <ellipse cx="196" cy="312" rx="92" ry="9" fill="url(#shadow)"/>
+  <ellipse cx="446" cy="314" rx="90" ry="9" fill="url(#shadow)"/>
+  <path d="M60 310 H 300 M 338 312 H 590" stroke="#D9CFC6" stroke-width="1" stroke-dasharray="1 7" stroke-linecap="round"/>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#pencil)">
+    <!-- 左：直背木椅（朝右） -->
+    <g stroke="#2B2A28">
+      <!-- 遠側（較淡） -->
+      <g stroke-opacity=".38" stroke-width="1.1">
+        <path d="M168 296 L 163 118"/>
+        <path d="M250 214 L 254 292"/>
+        <path d="M166 215 L 252 215"/>
+      </g>
+      <!-- 椅背橫條 -->
+      <g stroke-width="1.2" stroke-opacity=".8">
+        <path d="M150 131 L 164 123"/>
+        <path d="M151 152 L 164 145"/>
+        <path d="M152 174 L 165 167"/>
+      </g>
+      <!-- 近側 -->
+      <g stroke-width="1.5">
+        <path d="M156 304 L 149 118 Q 148 112 154 111"/>
+        <path d="M150 222 L 238 222 L 252 215"/>
+        <path d="M152 229 L 238 229 L 238 222"/>
+        <path d="M235 229 L 238 304"/>
+        <path d="M154 272 L 236 272" stroke-opacity=".45" stroke-width="1.1"/>
+      </g>
+    </g>
+
+    <!-- 右：曲木圓背椅（朝左） -->
+    <g stroke="#2B2A28">
+      <g stroke-opacity=".38" stroke-width="1.1">
+        <path d="M502 294 C 506 250 506 200 498 164 C 494 148 488 138 478 134"/>
+        <path d="M418 226 L 410 292"/>
+        <path d="M414 226 L 500 226"/>
+      </g>
+      <!-- 椅背圈與細直條 -->
+      <g stroke-width="1.15" stroke-opacity=".75">
+        <path d="M462 143 C 466 139 472 135 478 134"/>
+        <path d="M474 232 C 478 204 478 176 471 154"/>
+      </g>
+      <g stroke-width="1.5">
+        <path d="M490 306 C 494 258 494 206 486 170 C 482 152 474 144 462 143"/>
+        <path d="M402 233 L 488 233 L 500 226"/>
+        <path d="M403 239 L 488 239"/>
+        <path d="M402 233 L 403 239"/>
+        <path d="M407 239 L 401 306"/>
+        <path d="M410 280 C 440 286 466 286 490 280" stroke-opacity=".45" stroke-width="1.1"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- 紅線：沒有打結，也沒有被剪斷 -->
+  <path class="red-thread" d="M241 305 C 262 318, 286 300, 310 314 S 352 330, 372 314 C 384 305, 392 318, 401 309"
+        fill="none" stroke="#9B3B33" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

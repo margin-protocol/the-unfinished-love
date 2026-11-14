@@ -1,0 +1,26 @@
+<footer class="site-footer">
+    <div class="footer-thread" aria-hidden="true">{{> thread}}</div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <p class="footer-studio">{{config.brand}}<span>｜</span>{{config.brandZh}}</p>
+        <p class="footer-work">{{config.workTitleEn}}</p>
+        <p class="footer-tagline">{{config.tagline}}</p>
+      </div>
+      <nav class="footer-index" aria-label="檔案索引">
+        <p class="footer-label">FILE INDEX／檔案索引</p>
+        <ol>
+            {{fileIndex}}
+        </ol>
+      </nav>
+      <nav class="footer-links" aria-label="頁尾連結">
+        <p class="footer-label">LINKS</p>
+        <ul>
+          <li><a href="./">返回首頁</a></li>
+          <li><a href="./guide.html">使用指南</a></li>
+          <li><a href="./begin.html">開始故事</a></li>
+          <li>{{ext:studioUrl|MARGIN PROTOCOL 官方網站}}</li>
+        </ul>
+      </nav>
+    </div>
+    <p class="footer-note">本網站為虛構互動敘事作品介紹，頁面中的文件、編號與人物皆為展示用途，不具法律效力，也不提供法律、心理或婚姻諮詢。</p>
+  </footer>
